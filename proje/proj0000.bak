@@ -1,0 +1,108 @@
+   #include <dos.h>
+	#include <iostream>
+	#include <conio.h>
+
+
+
+	main()
+	{
+    union REGS regin,regout;
+    regin.h.ah = 0x0;
+    int86( 0x10, &regin, &regout );
+
+    int InputH=1;
+    int InputV=0;
+    int WidthH;
+    int WidthL;
+
+    regin.h.ah = 0x02; //curser position
+    regin.h.bh = 0;
+    regin.h.dl = 0;
+    regin.h.dh = 0;
+
+
+      if(InputV >=2 ){
+       WidthH = 640/(InputV+1);
+      } else{WidthH=100; }
+
+      if(InputH >=2 ){
+       WidthL = 480/(InputH+1);
+      } else{WidthL=100; }
+
+      int tempWidthH= WidthH;
+      int tempWidthL= WidthL;
+
+
+
+
+
+   //---------------------Row----------------------------------------------
+
+   int Count = InputH;
+   int Width = InputV;
+   int borderH;
+   regin.x.dx = tempWidthL; //row
+   Width=Width-1;
+    cout<<Width<<endl;
+    getch();
+
+   if(Width > 0) { borderH=(WidthH*(Width))+ WidthH;}
+   else if (Width <= 0 ) {borderH= WidthH*2;}
+
+    regin.x.ax = 0x12; int86( 0x10, &regin, &regout);
+   if(Count != 0){ // number of horizontal lines
+
+   while (Count>0){
+   while(tempWidthH <= borderH){
+    regin.x.cx = tempWidthH; //column
+
+    regin.h.ah = 0x0c; //draw a line
+    regin.h.al = 0x01; //colour
+    int86( 0x10, &regin, &regout);
+    tempWidthH = tempWidthH +1;
+    }
+     tempWidthH= WidthH;
+     Count=Count-1;
+     tempWidthL=tempWidthL+ WidthL;
+     regin.x.dx = tempWidthL;
+    }
+    }
+
+    //---------------------Horizontal----------------------------------------------
+
+    /* tempWidthH= WidthH;
+     tempWidthL= WidthL;
+     Count = InputV;
+     Width = InputH;
+
+    int borderL;
+   regin.x.cx = tempWidthH; //draw a line
+
+   if (Width !=1 || Width !=0 ){Width=Width-1; }
+
+   if(Width != 0) { borderL=(WidthL*(Width))+ WidthL;}
+   else{borderL=(WidthL + WidthL); }
+
+   if(Count != 0){ // number of horizontal lines
+
+   while (Count>0){
+   while(tempWidthL <=(borderL)){
+
+    regin.x.dx = tempWidthL; //colour
+    regin.h.ah = 0x0c; //draw a line
+    regin.h.al = 0x01; //colour
+    int86( 0x10, &regin, &regout);
+    tempWidthL = tempWidthL +1;
+    }
+     tempWidthL= WidthL;
+     Count=Count-1;
+     tempWidthH=tempWidthH+ WidthH;
+     regin.x.cx  = tempWidthH;
+    }
+
+    }
+
+     */
+
+	}
+
